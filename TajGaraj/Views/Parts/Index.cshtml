@@ -8,7 +8,12 @@
             <th>Part ID</th>
             <th>Name</th>
             <th>Description</th>
+            <th>Warranty</th>
+            <th>Vendor</th>
+            <th>Condition</th>
+            <th>Installed</th>
             <th>Location</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -18,7 +23,12 @@
                 <td>@part.ID</td>
                 <td>@part.Name</td>
                 <td>@part.Description</td>
+                <td>@part.Warranty</td>
+                <td>@part.Vendor</td>
+                <td>@part.condition</td>
+                <td>@part.installed</td>
                 <td>@part.Location</td>
+                <td>@Html.ActionLink("Edit", "Edit", new { id = part.ID })</td>
             </tr>
         }
     </tbody>

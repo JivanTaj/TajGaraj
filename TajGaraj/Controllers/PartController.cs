@@ -11,7 +11,9 @@ namespace TajGaraj.Controllers
         // Path to the JSON file for part data 
         private string _path = "Data/partData/parts.json";
 
+        //------------------------------------------------------------------------------------//
         // Index homepage 
+        //------------------------------------------------------------------------------------//
         public async Task<ActionResult> Index()
         {
             // reads part data file into list to display tables in index view
@@ -27,6 +29,10 @@ namespace TajGaraj.Controllers
             // index view #parts/index
             return View(parts);
         }
+
+        //------------------------------------------------------------------------------------//
+        // Create Methods for parts 
+        //------------------------------------------------------------------------------------//
         public async Task<ActionResult> Create()
         {
             return View();
@@ -57,6 +63,64 @@ namespace TajGaraj.Controllers
             }
 
             //create view #parts/create
+            return View(part);
+        }
+
+        //------------------------------------------------------------------------------------//
+        // Edit Methods for parts
+        //------------------------------------------------------------------------------------//
+        public async Task<ActionResult> Edit(int id)
+        {
+            var parts = new List<Part>();
+            if (System.IO.File.Exists(_path))
+            {
+                var json = await System.IO.File.ReadAllTextAsync(_path);
+                if (!string.IsNullOrWhiteSpace(json))
+                {
+                    parts = JsonSerializer.Deserialize<List<Part>>(json);
+                }
+            }
+
+            var part = parts.FirstOrDefault(p => p.ID == id);
+            if (part == null)
+            {
+                return NotFound();
+            }
+
+            return View(part);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(Part part)
+        {
+            if (ModelState.IsValid)
+            {
+                var parts = new List<Part>();
+                if (System.IO.File.Exists(_path))
+                {
+                    var json = await System.IO.File.ReadAllTextAsync(_path);
+                    if (!string.IsNullOrWhiteSpace(json))
+                    {
+                        parts = JsonSerializer.Deserialize<List<Part>>(json);
+                    }
+                }
+
+                var existingPart = parts.FirstOrDefault(p => p.ID == part.ID);
+                if (existingPart != null)
+                {
+                    // Update the existing part
+                    existingPart.Name = part.Name;
+                    existingPart.Description = part.Description;
+                    existingPart.Location = part.Location;
+
+                    // Save all parts back to the file
+                    var newJson = JsonSerializer.Serialize(parts);
+                    await System.IO.File.WriteAllTextAsync(_path, newJson);
+
+                    return RedirectToAction("Index");
+                }
+            }
+
             return View(part);
         }
     }
