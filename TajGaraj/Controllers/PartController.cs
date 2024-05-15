@@ -9,9 +9,19 @@ namespace TajGaraj.Controllers
     public class PartsController : Controller
     {
         private string _path = "Data/partData/parts.json";
-        public IActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var parts = new List<Part>();
+            if (System.IO.File.Exists(_path))
+            {
+                var json = await System.IO.File.ReadAllTextAsync(_path);
+                if (!string.IsNullOrWhiteSpace(json))
+                {
+                    parts = JsonSerializer.Deserialize<List<Part>>(json);
+                }
+            }
+
+            return View(parts);
         }
         public async Task<ActionResult> Create()
         {

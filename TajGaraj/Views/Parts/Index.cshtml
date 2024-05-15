@@ -1,8 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<TajGaraj.Models.Part>
 
-<div class="text-center">
-    <h1 class="display-4">the parts index </h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Parts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Part ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var part in Model)
+        {
+            <tr>
+                <td>@part.ID</td>
+                <td>@part.Name</td>
+                <td>@part.Description</td>
+                <td>@part.Location</td>
+            </tr>
+        }
+    </tbody>
+</table>
