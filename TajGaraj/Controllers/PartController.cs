@@ -16,8 +16,8 @@ namespace TajGaraj.Controllers
         public async Task<ActionResult> Create()
         {
             return View();
-        } 
-       
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(Part part)
         {
@@ -28,7 +28,10 @@ namespace TajGaraj.Controllers
                 if (System.IO.File.Exists(_path))
                 {
                     var json = await System.IO.File.ReadAllTextAsync(_path);
-                    parts = JsonSerializer.Deserialize<List<Part>>(json);
+                    if (!string.IsNullOrWhiteSpace(json))
+                    {
+                        parts = JsonSerializer.Deserialize<List<Part>>(json);
+                    }
                 }
 
                 // Add the new part
