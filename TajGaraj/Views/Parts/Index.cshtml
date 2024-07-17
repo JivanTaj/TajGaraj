@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<TajGaraj.Models.Part>
 
 <h2>Parts</h2>
+@Html.ActionLink("Add Part", "Create", "Parts", new { }, new { @class = "btn btn-primary" })
 
 <table class="table">
     <thead>
